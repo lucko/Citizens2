@@ -14,7 +14,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<craftbukkit.version>1.11-R0.1-SNAPSHOT</craftbukkit.version> 
 		<citizensapi.version>2.0.21-SNAPSHOT</citizensapi.version>
-		<vault.version>1.5.4</vault.version>
+		<vault.version>1.6</vault.version>
 		<powermock.version>1.4.12</powermock.version>
 		<build.number>Unknown</build.number>
 		<BUILD_NUMBER>Unknown</BUILD_NUMBER>
@@ -22,8 +22,8 @@
 
 	<repositories>
 		<repository>
-			<id>bukkit-repo</id>
-			<url>http://repo.bukkit.org/content/groups/public/</url>
+			<id>spigot-repo</id>
+			<url>https://hub.spigotmc.org/nexus/content/groups/public/</url>
 		</repository>
 		<repository>
 			<id>everything</id>
@@ -34,13 +34,6 @@
 			<url>http://nexus.hc.to/content/repositories/pub_releases</url>
 		</repository>
 	</repositories>
-
-	<pluginRepositories>
-		<pluginRepository>
-			<id>bukkit-plugins</id>
-			<url>http://repo.bukkit.org/content/groups/public</url>
-		</pluginRepository>
-	</pluginRepositories>
 
 	<dependencies>
 		<dependency>
@@ -65,7 +58,7 @@
 		</dependency>
 		<dependency>
 			<groupId>net.milkbowl.vault</groupId>
-			<artifactId>Vault</artifactId>
+			<artifactId>VaultAPI</artifactId>
 			<version>${vault.version}</version>
 			<type>jar</type>
 			<scope>provided</scope>
