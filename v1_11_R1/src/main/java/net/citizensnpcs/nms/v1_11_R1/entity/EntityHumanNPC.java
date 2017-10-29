@@ -111,9 +111,11 @@ public class EntityHumanNPC extends EntityPlayer implements NPCHolder, Skinnable
         super.A_();
         if (npc == null)
             return;
+        this.noclip = isSpectator();
         if (updateCounter + 1 > Setting.PACKET_UPDATE_DELAY.asInt()) {
             updateEffects = true;
         }
+        Bukkit.getServer().getPluginManager().unsubscribeFromPermission("bukkit.broadcast.user", bukkitEntity);
         livingEntityBaseTick();
 
         boolean navigating = npc.getNavigator().isNavigating();
@@ -389,6 +391,20 @@ public class EntityHumanNPC extends EntityPlayer implements NPCHolder, Skinnable
         skinTracker.notifySkinChange(forceUpdate);
     }
 
+    @Override
+    public void setSkinPersistent(String skinName, String signature, String data) {
+        Preconditions.checkNotNull(skinName);
+        Preconditions.checkNotNull(signature);
+        Preconditions.checkNotNull(data);
+
+        npc.data().setPersistent(NPC.PLAYER_SKIN_UUID_METADATA, skinName.toLowerCase());
+        npc.data().setPersistent(NPC.PLAYER_SKIN_TEXTURE_PROPERTIES_SIGN_METADATA, signature);
+        npc.data().setPersistent(NPC.PLAYER_SKIN_TEXTURE_PROPERTIES_METADATA, data);
+        npc.data().setPersistent(NPC.PLAYER_SKIN_USE_LATEST, false);
+        npc.data().setPersistent("cached-skin-uuid-name", skinName.toLowerCase());
+        skinTracker.notifySkinChange(false);
+    }
+
     public void setTargetLook(Entity target, float yawOffset, float renderOffset) {
         controllerLook.a(target, yawOffset, renderOffset);
     }
@@ -494,6 +510,11 @@ public class EntityHumanNPC extends EntityPlayer implements NPCHolder, Skinnable
         @Override
         public void setSkinName(String skinName, boolean forceUpdate) {
             ((SkinnableEntity) this.entity).setSkinName(skinName, forceUpdate);
+        }
+
+        @Override
+        public void setSkinPersistent(String skinName, String signature, String data) {
+            ((SkinnableEntity) this.entity).setSkinPersistent(skinName, signature, data);
         }
     }
 

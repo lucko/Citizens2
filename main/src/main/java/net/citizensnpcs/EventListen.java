@@ -10,9 +10,9 @@ import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.entity.AbstractHorse;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.FishHook;
-import org.bukkit.entity.Horse;
 import org.bukkit.entity.Minecart;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -119,8 +119,9 @@ public class EventListen implements Listener {
         int owned = 0;
         for (NPC npc : npcRegistry) {
             if (!event.getNPC().equals(npc) && npc.hasTrait(Owner.class)
-                    && npc.getTrait(Owner.class).isOwnedBy(event.getCreator()))
+                    && npc.getTrait(Owner.class).isOwnedBy(event.getCreator())) {
                 owned++;
+            }
         }
         int wouldOwn = owned + 1;
         if (wouldOwn > limit) {
@@ -504,7 +505,7 @@ public class EventListen implements Listener {
         if (!npcRegistry.isNPC(event.getEntered()))
             return;
         NPC npc = npcRegistry.getNPC(event.getEntered());
-        if ((npc.getEntity() instanceof Horse || npc.getEntity().getType() == EntityType.BOAT
+        if ((npc.getEntity() instanceof AbstractHorse || npc.getEntity().getType() == EntityType.BOAT
                 || npc.getEntity() instanceof Minecart) && !npc.getTrait(Controllable.class).isEnabled()) {
             event.setCancelled(true);
         }
@@ -554,7 +555,14 @@ public class EventListen implements Listener {
                 }
                 continue;
             }
-            ids.remove(i--);
+            try {
+                ids.remove(i--);
+            } catch (IndexOutOfBoundsException ex) {
+                // something caused toRespawn to get modified?
+                Messaging.debug("Some strange chunk loading happened while spawning", npc.getId(),
+                        " - check all your NPCs in chunk [" + coord.x + "," + coord.z + "] are spawned");
+                break;
+            }
             if (Messaging.isDebugging()) {
                 Messaging.debug("Spawned id", npc.getId(), "due to chunk event at [" + coord.x + "," + coord.z + "]");
             }

@@ -12,6 +12,7 @@ import org.bukkit.entity.FishHook;
 import org.bukkit.entity.Horse;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Shulker;
 import org.bukkit.entity.Tameable;
 import org.bukkit.entity.Wither;
 import org.bukkit.event.entity.CreatureSpawnEvent.SpawnReason;
@@ -113,6 +114,8 @@ public interface NMSBridge {
 
     public void setDestination(Entity entity, double x, double y, double z, float speed);
 
+    public void setDummyAdvancement(Player entity);
+
     public void setHeadYaw(Entity entity, float yaw);
 
     public void setKnockbackResistance(LivingEntity entity, double d);
@@ -122,6 +125,8 @@ public interface NMSBridge {
     public void setProfile(SkullMeta meta, GameProfile profile);
 
     public void setShouldJump(Entity entity);
+
+    public void setShulkerPeek(Shulker shulker, int peek);
 
     public void setSitting(Tameable tameable, boolean sitting);
 
